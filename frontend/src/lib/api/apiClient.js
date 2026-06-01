@@ -1,8 +1,7 @@
 import axios from "axios";
 import useAuthStore from "../store/authStore";
 
-// Production always uses same-origin /api (Render serves frontend + backend together).
-// Local dev uses the backend on port 5000.
+ 
 const API_URL = import.meta.env.DEV ? "http://localhost:5000/api" : "/api";
 
 const api = axios.create({
@@ -12,8 +11,7 @@ const api = axios.create({
     },
 })
 
-
-// Interceptor to add the Authorization header
+ 
 
 api.interceptors.request.use((config) => {
 
@@ -26,6 +24,6 @@ api.interceptors.request.use((config) => {
     return config;
 })
 
-// Request or response interceptor to add the token
+ 
 
 export default api

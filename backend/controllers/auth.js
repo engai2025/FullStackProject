@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import User from "../models/User.js";
 import { generateToken } from "../utils/generateToken.js";
 
-// REGISTER NEW USER
+ 
 
 export const register = async (req, res, next) => {
 

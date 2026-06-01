@@ -14,7 +14,7 @@ const useAuthStore = create(
             token: null,
             isAuthenticated: false,
 
-            // Set user data and token after successfully login
+      
 
             setAuth: (userData, token) => set({
                 user: userData,
@@ -22,15 +22,14 @@ const useAuthStore = create(
                 isAuthenticated: true
             }),
 
-            // clear user data and token after logout
+ 
 
             clearAuth: () => set({
                 user: null,
                 token: null,
                 isAuthenticated: false
             }),
-
-            // Get token (for use outside of React components)
+ 
             getToken: () => get().token,
 
         }),

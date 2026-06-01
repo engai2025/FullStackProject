@@ -7,13 +7,4 @@ export const upload = multer({
     limits: { fileSize: 10 * 1024 * 1024 } // 10 MB
 })
 
-
-/*{
-  fieldname: 'file',
-  originalname: 'avatar.png',
-  encoding: '7bit',
-  mimetype: 'image/png',
-  buffer: <Buffer ...>,       // ← THIS is the file content
-  size: 143233
-}
-*/
+ 
