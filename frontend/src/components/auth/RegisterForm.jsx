@@ -60,6 +60,11 @@ const RegisterForm = () => {
             return
         }
 
+        if (formValues.password.length < 6) {
+            setError('Password must be at least 6 characters')
+            return
+        }
+
         registerMutation.mutate({
             name: formValues.name,
             email: formValues.email,
@@ -114,6 +119,7 @@ const RegisterForm = () => {
                                 type={"password"}
                                 placeholder="*****"
                                 required
+                                minLength={6}
 
                                 value={formValues.password}
                                 onChange={handleInputChange} />
@@ -127,6 +133,7 @@ const RegisterForm = () => {
                                 type={"password"}
                                 placeholder="******"
                                 required
+                                minLength={6}
                                 value={formValues.confirmPassword}
                                 onChange={handleInputChange}
                             />

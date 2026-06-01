@@ -3,7 +3,7 @@ import React from 'react'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
-const DashboardWelcome = ({ onCreateTask, showCreateForm }) => {
+const DashboardWelcome = ({ onCreateExpense }) => {
     return (
         <Card className="border-0 shadow-sm bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950">
             <CardHeader className="pb-4">
@@ -12,22 +12,16 @@ const DashboardWelcome = ({ onCreateTask, showCreateForm }) => {
                     <div className="space-y-2 flex flex-col items-start">
                         <CardTitle className="text-2xl">Welcome back!</CardTitle>
                         <CardDescription className="text-base">
-                            Here's what's happening with your tasks today.
+                            Here's an overview of your expenses today.
                         </CardDescription>
                     </div>
-                    {/* TODO: create new task */}
-                    <Button
-                        onClick={onCreateTask}
-                    >
-                        Create New Task
+                    <Button onClick={onCreateExpense}>
+                        Add Expense
                     </Button>
                 </div>
             </CardHeader>
 
-            <CardContent className="p-6">
-                {/* Card status */}
-
-            </CardContent >
+            <CardContent className="p-6" />
         </Card>
     )
 }

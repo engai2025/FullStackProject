@@ -8,13 +8,15 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'Task Manager API',
+            title: 'Expense Tracker API',
             version: '1.0.0',
-            description: 'API documentation for our task manager backend'
+            description: 'API documentation for our expense tracker backend'
         },
         servers: [
             {
-                url: process.env.NODE_ENV == "development" ? 'http://localhost:5000' : "https://mentorship-api-jys6.onrender.com"
+                url: process.env.NODE_ENV == "development"
+                    ? 'http://localhost:5000'
+                    : (process.env.API_PUBLIC_URL?.replace(/\/api$/, '') || "https://mentorship-api-jys6.onrender.com")
             }
         ],
         components: {

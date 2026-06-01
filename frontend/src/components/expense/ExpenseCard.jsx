@@ -6,8 +6,6 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from '../ui/button';
@@ -25,31 +23,23 @@ import {
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../../lib/api/apiClient';
 
-const STATUS_CONFIG = {
-    'pending': {
-        variant: 'secondary',
-        label: 'Pending',
-        color: 'text-yellow-600'
-    },
-    'in progress': {
-        variant: 'default',
-        label: 'In Progress',
-        color: 'text-blue-600'
-    },
-    'completed': {
-        variant: 'outline',
-        label: 'Completed',
-        color: 'text-green-600'
-    }
+const CATEGORY_CONFIG = {
+    'food': { variant: 'secondary', label: 'Food', color: 'text-orange-600' },
+    'rent': { variant: 'default', label: 'Rent', color: 'text-blue-600' },
+    'transport': { variant: 'outline', label: 'Transport', color: 'text-purple-600' },
+    'utilities': { variant: 'secondary', label: 'Utilities', color: 'text-yellow-600' },
+    'entertainment': { variant: 'outline', label: 'Entertainment', color: 'text-pink-600' },
+    'shopping': { variant: 'secondary', label: 'Shopping', color: 'text-indigo-600' },
+    'health': { variant: 'outline', label: 'Health', color: 'text-green-600' },
+    'other': { variant: 'secondary', label: 'Other', color: 'text-gray-600' }
 };
 
-const TaskCard = ({
-    task,
+const ExpenseCard = ({
+    expense,
     onEdit,
     isLoading = false
 }) => {
@@ -57,7 +47,7 @@ const TaskCard = ({
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
 
-    const statusConfig = STATUS_CONFIG[task.status] || STATUS_CONFIG['pending'];
+    const categoryConfig = CATEGORY_CONFIG[expense.category] || CATEGORY_CONFIG['other'];
 
     const formatDate = (dateString) => {
         if (!dateString) return null;
@@ -68,28 +58,29 @@ const TaskCard = ({
         });
     };
 
-    const isOverdue = (dueDate) => {
-        if (!dueDate || task.status === 'completed') return false;
-        return new Date(dueDate) < new Date();
+    const formatAmount = (amount) => {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        }).format(amount);
     };
 
-    const dueDate = formatDate(task.dueDate);
-    const overdue = isOverdue(task.dueDate);
+    const expenseDate = formatDate(expense.date);
 
     const queryClient = useQueryClient();
 
     const deleteMutation = useMutation({
         mutationFn: async () => {
-            const response = await api.delete(`/tasks/${task._id}`);
+            const response = await api.delete(`/expenses/${expense._id}`);
             return response.data;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries(['tasks']);
-            toast.success('Task deleted successfully', { op });
+            queryClient.invalidateQueries(['expenses']);
+            toast.success('Expense deleted successfully');
         },
         onError: (error) => {
-            toast.error(`Error deleting task: ${error.message}`);
-            console.error("Error deleting task:", error);
+            toast.error(`Error deleting expense: ${error.message}`);
+            console.error("Error deleting expense:", error);
         }
     })
 
@@ -97,7 +88,7 @@ const TaskCard = ({
     const handleDeleteConfirm = async () => {
 
         try {
-            await deleteMutation.mutateAsync(task._id);
+            await deleteMutation.mutateAsync(expense._id);
             setShowDeleteDialog(false);
         } catch (error) {
             console.error("Error confirming delete:", error);
@@ -111,20 +102,22 @@ const TaskCard = ({
             <Card className="w-full transition-shadow hover:shadow-md">
                 <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
-                        <CardTitle className="text-lg leading-tight">{task?.title}</CardTitle>
+                        <div className="space-y-1">
+                            <CardTitle className="text-lg leading-tight">{expense?.title}</CardTitle>
+                            <p className="text-2xl font-bold text-primary">{formatAmount(expense.amount)}</p>
+                        </div>
 
                         <div className='flex items-center gap-2'>
-                            <Badge variant={statusConfig?.variant} className={'shrink-0'}>
-                                {statusConfig?.label}
+                            <Badge variant={categoryConfig?.variant} className={'shrink-0'}>
+                                {categoryConfig?.label}
                             </Badge>
 
-                            {/* Dprodown */}
+                            {/* Dropdown */}
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <Button
                                         variant="ghost"
                                         size="sm"
-                                        // disabled={isLoading}
                                         className="h-8 w-8 p-0"
                                     >
                                         <span className="sr-only">Open menu</span>
@@ -134,7 +127,7 @@ const TaskCard = ({
 
                                 <DropdownMenuContent align="end">
                                     <DropdownMenuItem
-                                        onClick={() => onEdit(task)}
+                                        onClick={() => onEdit(expense)}
                                     >
                                         <Edit2 className="mr-2 h-4 w-4" />
                                         Edit
@@ -155,34 +148,29 @@ const TaskCard = ({
                 <CardContent className="space-y-3">
                     {/* description */}
                     {
-                        task.description && (
-                            <p className='text-muted-foreground text-sm leading-relaxed'>{task.description}</p>
+                        expense.description && (
+                            <p className='text-muted-foreground text-sm leading-relaxed'>{expense.description}</p>
                         )
                     }
-                    {/* due date */}
+                    {/* date */}
 
                     {
 
-                        dueDate && (
+                        expenseDate && (
                             <div className="flex items-center gap-2">
                                 <Calendar className="h-4 w-4 text-muted-foreground" />
-                                <span className="text-sm text-muted-foreground">Due:</span>
-                                <Badge
-                                    variant={overdue ? "destructive" : "outline"}
-                                    className="text-xs"
-                                >
-                                    {dueDate}
-                                    {overdue && ' (Overdue)'}
+                                <span className="text-sm text-muted-foreground">Date:</span>
+                                <Badge variant="outline" className="text-xs">
+                                    {expenseDate}
                                 </Badge>
                             </div>
                         )
                     }
 
-                    {/* Simple status indicator */}
                     <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
-                        <span>Created: {formatDate(task.createdAt)}</span>
-                        <span className={statusConfig.color}>
-                            {statusConfig.label}
+                        <span>Added: {formatDate(expense.createdAt)}</span>
+                        <span className={categoryConfig.color}>
+                            {categoryConfig.label}
                         </span>
                     </div>
 
@@ -198,7 +186,7 @@ const TaskCard = ({
                     <AlertDialogHeader>
                         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                         <AlertDialogDescription>
-                            This action cannot be undone. This will permanently delete the task "{task.title}".
+                            This action cannot be undone. This will permanently delete the expense "{expense.title}".
                         </AlertDialogDescription>
                     </AlertDialogHeader>
 
@@ -227,4 +215,4 @@ const TaskCard = ({
     )
 }
 
-export default TaskCard
+export default ExpenseCard

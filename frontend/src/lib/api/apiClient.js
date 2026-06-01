@@ -1,7 +1,9 @@
 import axios from "axios";
 import useAuthStore from "../store/authStore";
 
-const API_URL = "https://mentorship-api-jys6.onrender.com/api";
+// Production always uses same-origin /api (Render serves frontend + backend together).
+// Local dev uses the backend on port 5000.
+const API_URL = import.meta.env.DEV ? "http://localhost:5000/api" : "/api";
 
 const api = axios.create({
     baseURL: API_URL,

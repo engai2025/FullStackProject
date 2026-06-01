@@ -3,30 +3,30 @@ import { Loader } from 'lucide-react'
 import React, { useState } from 'react'
 import DashboardHeader from '../../components/dashboard/DashboardHeader'
 import DashboardWelcome from '../../components/dashboard/DashboardWelcome'
-import TaskForm from '../../components/task/TaskForm'
-import TaskList from '../../components/task/TaskList'
+import ExpenseForm from '../../components/expense/ExpenseForm'
+import ExpenseList from '../../components/expense/ExpenseList'
 import api from '../../lib/api/apiClient'
 
 const DashboardPage = () => {
 
     const [showCreateForm, setShowCreateForm] = useState(false)
-    const [editingTask, setEditingTask] = useState(null)
+    const [editingExpense, setEditingExpense] = useState(null)
 
 
     const handleFormClose = () => {
         setShowCreateForm(false)
-        setEditingTask(null)
+        setEditingExpense(null)
     }
 
-    const handleCreateTaskClick = () => {
+    const handleCreateExpenseClick = () => {
         setShowCreateForm(true)
     }
 
 
-    const tasksQuery = useQuery({
-        queryKey: ['tasks'],
+    const expensesQuery = useQuery({
+        queryKey: ['expenses'],
         queryFn: async () => {
-            const response = await api.get('/tasks');
+            const response = await api.get('/expenses');
             return response.data;
         },
         retry: 1,
@@ -34,19 +34,12 @@ const DashboardPage = () => {
 
 
 
-    const handleEditTask = (task) => {
-        setEditingTask(task)
+    const handleEditExpense = (expense) => {
+        setEditingExpense(expense)
         setShowCreateForm(true)
     }
 
-
-
-    const handleStatusChange = async (taskId, statusData) => {
-        // TODO : MUTATION TO UPDATE TASK STATUS
-        // This function will be called when the status of a task is changed
-    }
-
-    if (tasksQuery.isLoading) {
+    if (expensesQuery.isLoading) {
         return (
             <div className='flex h-screen items-center justify-center'>
                 <Loader className='animate-spin' />
@@ -54,10 +47,10 @@ const DashboardPage = () => {
         )
     }
 
-    if (tasksQuery.isError) {
+    if (expensesQuery.isError) {
         return (
             <div className='flex h-screen items-center justify-center'>
-                <p className='text-red-500'>Error loading tasks: {tasksQuery.error.message}</p>
+                <p className='text-red-500'>Error loading expenses: {expensesQuery.error.message}</p>
             </div>
         )
     }
@@ -75,24 +68,23 @@ const DashboardPage = () => {
                 {/* Welcome Section */}
                 <DashboardWelcome
                     showCreateForm={showCreateForm}
-                    onCreateTask={handleCreateTaskClick}
+                    onCreateExpense={handleCreateExpenseClick}
                 />
-                {/* Tasks Section */}
+                {/* Expenses Section */}
                 <div>
-                    <TaskList
-                        tasks={tasksQuery.data || []}
-                        isLoading={tasksQuery.isLoading}
-                        onEdit={handleEditTask}
-                        onStatusChange={handleStatusChange}
+                    <ExpenseList
+                        expenses={expensesQuery.data || []}
+                        isLoading={expensesQuery.isLoading}
+                        onEdit={handleEditExpense}
                     />
                 </div>
             </main>
 
-            {/* Task Dialog Form */}
+            {/* Expense Dialog Form */}
 
-            <TaskForm
-                task={editingTask}
-                open={showCreateForm || !!editingTask}
+            <ExpenseForm
+                expense={editingExpense}
+                open={showCreateForm || !!editingExpense}
                 onOpenChange={handleFormClose}
             />
 

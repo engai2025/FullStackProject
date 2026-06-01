@@ -32,7 +32,7 @@ export const extractErrorMessages = (error) => {
     // handle network errors
 
 
-    if (error.response && !error.response) {
+    if (!error.response) {
         return 'Network Error , Please check your connection'
     }
 

@@ -1,0 +1,46 @@
+RENDER + MONGODB ATLAS — FINAL SETUP
+====================================
+
+Your Expense Tracker UI works on Render.
+Database shows "disconnected" until MONGO_URI_PRO is correct on Render.
+
+COPY THIS EXACT VALUE INTO RENDER
+---------------------------------
+Render → FullStackProject → Environment → MONGO_URI_PRO
+
+mongodb+srv://engai2025_db_user:YOUR_PASSWORD@cluster0.0avphrx.mongodb.net/expense-manager?retryWrites=true&w=majority&authSource=admin&appName=Cluster0
+
+Replace YOUR_PASSWORD with the Atlas password for engai2025_db_user.
+
+Also set:
+JWT_SECRET=(same as local .env)
+NODE_ENV=production
+FRONTEND_URL=https://fullstackproject-vrds.onrender.com
+
+ATLAS CHECKLIST
+---------------
+1. Network Access → 0.0.0.0/0 → Status: Active (wait if still deploying)
+2. Database Access → user engai2025_db_user exists
+3. Database name in URI: expense-manager
+
+BUILD SETTINGS ON RENDER
+------------------------
+Build Command: npm run render-build
+Start Command: npm start
+
+DEPLOY
+------
+Manual Deploy → latest commit → wait 5 minutes
+
+VERIFY
+------
+https://fullstackproject-vrds.onrender.com/api/health
+
+Success looks like:
+  "database": "connected"
+  "dbName": "expense-manager"
+  "cluster": "cluster0.0avphrx.mongodb.net"
+
+If still disconnected:
+- Edit engai2025_db_user in Atlas → Edit Password → update MONGO_URI_PRO on Render
+- Confirm 0.0.0.0/0 is Active (not still deploying)

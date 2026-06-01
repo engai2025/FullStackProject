@@ -83,7 +83,7 @@ const LoginForm = () => {
             <CardHeader className="space-y-1 pb-4">
                 <CardTitle className="text-xl text-center">Signin</CardTitle>
                 <CardDescription className={"text-center"}>
-                    Enter your credentials to access your account
+                    Enter your credentials to access your expense tracker
                 </CardDescription>
                 <form onSubmit={handleSubmit}>
                     <CardContent className="space-y-4 pt-0">

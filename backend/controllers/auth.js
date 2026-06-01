@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import User from "../models/User.js";
 import { generateToken } from "../utils/generateToken.js";
 
@@ -8,6 +9,10 @@ export const register = async (req, res, next) => {
     let { name, password, email, role } = req.body;
 
     try {
+        console.log("Mongo Ready State:", mongoose.connection.readyState);
+        console.log("Register attempt for email:", email);
+        console.log("Password Length:", password?.length ?? 0);
+
         email = email.toLowerCase();
         const exists = await User.findOne({ email });
 
@@ -15,12 +20,13 @@ export const register = async (req, res, next) => {
 
         const user = await User.create({ name, password, email, role });
 
-        const token = generateToken(user._id)
+        generateToken(user._id)
 
         res.status(201).json({ "success": true, message: "User registered successfully" })
 
     } catch (err) {
-        console.log("error", err)
+        console.error("REGISTER ERROR:", err.message);
+        console.error("STACK:", err.stack);
         next(err)
     }
 }

@@ -1,30 +1,30 @@
 
 import express from 'express'
-import { createTask, deleteTask, getMyTasks, updateTask } from '../controllers/taskController.js';
+import { createExpense, deleteExpense, getMyExpenses, updateExpense } from '../controllers/expenseController.js';
 import { protect } from '../middlewares/auth.js'
 
 const router = express.Router();
 
 /**
  * @swagger
- * /tasks:
+ * /expenses:
  *  get:
- *      summary: Get All tasks for the logged-in user
- *      tags: [Tasks]
+ *      summary: Get All expenses for the logged-in user
+ *      tags: [Expenses]
  *      security:
  *         - bearerAuth: []
  *      responses: 
  *          200:
- *             description: A List of tasks     
+ *             description: A List of expenses     
  */
-router.get('/', protect, getMyTasks);
+router.get('/', protect, getMyExpenses);
 
 /**
  * @swagger
- * /tasks:
+ * /expenses:
  *   post:
- *     summary: Create a new task
- *     tags: [Tasks]
+ *     summary: Create a new expense
+ *     tags: [Expenses]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -35,36 +35,39 @@ router.get('/', protect, getMyTasks);
  *             type: object
  *             required:
  *               - title
+ *               - amount
  *             properties:
  *               title:
  *                 type: string
+ *               amount:
+ *                 type: number
+ *               category:
+ *                 type: string
+ *                 enum: [food, rent, transport, utilities, entertainment, shopping, health, other]
  *               description:
  *                 type: string
- *               status:
- *                 type: string
- *                 enum: [pending, in progress, completed]
- *               dueDate:
+ *               date:
  *                 type: string
  *     responses:
  *       201:
- *         description: Task created
+ *         description: Expense created
  */
 
 
-router.post('/', protect, createTask);
+router.post('/', protect, createExpense);
 /**
  * @swagger
- * /tasks/{id}:
+ * /expenses/{id}:
  *   put:
- *     summary: Update a task by ID
- *     tags: [Tasks]
+ *     summary: Update an expense by ID
+ *     tags: [Expenses]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: Task ID
+ *         description: Expense ID
  *         schema:
  *           type: string
  *     requestBody:
@@ -76,39 +79,43 @@ router.post('/', protect, createTask);
  *             properties:
  *               title:
  *                 type: string
+ *               amount:
+ *                 type: number
+ *               category:
+ *                 type: string
  *               description:
  *                 type: string
- *               status:
+ *               date:
  *                 type: string
  *     responses:
  *       200:
- *         description: Task updated
+ *         description: Expense updated
  */
 
 
 
-router.put('/:id', protect, updateTask);
+router.put('/:id', protect, updateExpense);
 
 /**
  * @swagger
- * /tasks/{id}:
+ * /expenses/{id}:
  *   delete:
- *     summary: Delete a task by ID
- *     tags: [Tasks]
+ *     summary: Delete an expense by ID
+ *     tags: [Expenses]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
- *         description: Task ID
+ *         description: Expense ID
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Task deleted
+ *         description: Expense deleted
  */
-router.delete('/:id', protect, deleteTask);
+router.delete('/:id', protect, deleteExpense);
 
 // export the router
 export default router;

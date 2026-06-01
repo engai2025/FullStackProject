@@ -1,4 +1,4 @@
-import { ClipboardCheck } from 'lucide-react'
+import { Wallet } from 'lucide-react'
 import React from 'react'
 
 import useAuthStore from '../../lib/store/authStore';
@@ -28,9 +28,9 @@ const DashboardHeader = () => {
 
                 <div className="flex items-center gap-3">
                     <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-                        <ClipboardCheck className="h-4 w-4 text-primary-foreground" />
+                        <Wallet className="h-4 w-4 text-primary-foreground" />
                     </div>
-                    <h1 className="text-xl font-semibold text-foreground">Task Dashboard</h1>
+                    <h1 className="text-xl font-semibold text-foreground">Expense Tracker</h1>
                 </div>
 
                 <div className="flex items-center gap-4">
