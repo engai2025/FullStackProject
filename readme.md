@@ -1,4 +1,4 @@
-﻿# Final_Project_Node.js
+﻿## Final_Project_Node.js
  
   
   ## Developer Name: Eng Abdirahman Ai
@@ -9,7 +9,7 @@
   
   ***
   
-  [GitHub Link](https://github.com/engai2025/Final_Project_Node.js)
+  [GitHub Link](https://github.com/engai2025/FullStackProject)
   
   ***
   
@@ -21,7 +21,7 @@
   
   ***
  
-  ![Output The Code](src/node_project_img.png)
+  ![Output The Code](frontend/src/Output.png)
  
 
  
@@ -44,7 +44,7 @@
   
   | Programming Language | Framework | Database |
   |:--------------------|:----------|:---------|
-  |  Node.js| 0         | 0  Express     Mongodb |
+  |  Node.js|         Express  |       Mongodb |
   
   ***
   
